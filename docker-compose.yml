@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_learning_tracker
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: learning_tracker_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql
+
+volumes:
+  data:

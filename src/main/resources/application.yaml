@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: learning-tracker
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/learning_tracker_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+
