@@ -2,6 +2,7 @@ package com.yugurekaze.learningtracker.user.service;
 
 import com.yugurekaze.learningtracker.user.exception.IllegalEmailException;
 import com.yugurekaze.learningtracker.user.exception.UserNotFoundException;
+import com.yugurekaze.learningtracker.user.exception.WrongEmailException;
 import com.yugurekaze.learningtracker.user.exception.WrongPasswordException;
 import com.yugurekaze.learningtracker.user.mapper.UserMapper;
 import com.yugurekaze.learningtracker.user.model.User;
@@ -19,7 +20,6 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Validated
 public class UserService {
 
     private final UserRepository userRepository;
@@ -44,7 +44,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse createUser(@Valid UserCreationRequest userCreationRequest) {
+    public UserResponse createUser(UserCreationRequest userCreationRequest) {
         User user = userMapper.mapToUserCreation(userCreationRequest);
         userRepository.save(user);
         return userMapper.mapToUserResponse(user);
@@ -52,9 +52,25 @@ public class UserService {
 
     @Transactional
     public UserResponse changeUserEmail(Long id, String newEmail) {
-        userRepository.changeUserEmail(id, newEmail);
+        if(newEmail == null || newEmail.isEmpty()) {
+            log.error("Method changeUserEmail called with empty or null newEmail");
+            throw new WrongEmailException("New email is empty or null");
+        }
+        User existing = userRepository.findByEmail(newEmail)
+                .orElse(null);
+        if (existing != null) {
+            throw new WrongEmailException("Email already exists");
+        }
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+        if (user.getEmail().equals(newEmail)) {
+            log.error("User with id {} tried to change email to the same email", id);
+            throw new WrongEmailException("New email is the same as old email");
+        }
+        user.setEmail(newEmail);
         log.info("User with id {} changed email to {} at {}", id, newEmail, LocalDateTime.now());
-        return getUserById(id);
+        return userMapper.mapToUserResponse(user);
     }
     //TODO добавить событие через kafka который пишет в ClickHouse для аналитики
     @Transactional
