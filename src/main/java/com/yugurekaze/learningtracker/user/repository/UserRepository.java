@@ -13,11 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE User u SET u.email = :newEmail WHERE u.id = :id")
-    //TODO fix this method, for example with user password
-    void changeUserEmail(@Param("id") Long id, @Param("newEmail") String newEmail);
-
-    @Modifying(clearAutomatically = true)
     @Query("UPDATE User u SET u.password = :newPassword WHERE u.id = :id")
     void changeUserPassword(@Param("id") Long id, @Param("newPassword") String newPassword);
 
