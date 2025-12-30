@@ -1,10 +1,12 @@
 package com.yugurekaze.learningtracker.user.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
-
-
 import java.time.LocalDateTime;
 
 @Entity
