@@ -104,13 +104,10 @@ public class UserServiceTest {
         userEntity.setId(1L);
         userEntity.setEmail("test@example.com");
         userEntity.setCreatedAt(fixedTime);
-        UserResponse expectedResponse = new UserResponse("new@example.com", fixedTime);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(userEntity));
-        when(userMapper.mapToUserResponse(userEntity)).thenReturn(expectedResponse);
+        userService.changeUserEmail(1L, "new@example.com");
 
-        UserResponse actualResponse = userService.changeUserEmail(1L, "new@example.com");
-        assertThat(actualResponse).isEqualTo(expectedResponse);
         assertThat(userEntity.getEmail()).isEqualTo("new@example.com");
     }
 
