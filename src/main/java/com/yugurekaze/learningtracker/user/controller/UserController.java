@@ -40,9 +40,9 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/email")
-    public ResponseEntity<UserResponse> changeUserEmail(@PathVariable Long id, @RequestBody @Valid ChangeEmailRequest changeEmailRequest) {
-        UserResponse userResponse = userService.changeUserEmail(id, changeEmailRequest.newEmail());
-        return ResponseEntity.ok(userResponse);
+    public ResponseEntity<Void> changeUserEmail(@PathVariable Long id, @RequestBody @Valid ChangeEmailRequest changeEmailRequest) {
+        userService.changeUserEmail(id, changeEmailRequest.newEmail());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{id}")
