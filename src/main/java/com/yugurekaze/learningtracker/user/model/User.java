@@ -1,5 +1,6 @@
 package com.yugurekaze.learningtracker.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class User {
     private String email;
 
     @Column(name = "password", length = 255, nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name = "created_at", nullable = false, updatable = false)
