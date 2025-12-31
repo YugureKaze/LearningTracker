@@ -55,7 +55,7 @@ public class DefaultUserService implements UserService {
     @Transactional
     @Override
     public UserResponse changeUserEmail(Long id, String newEmail) {
-        if(newEmail == null || newEmail.isEmpty()) {
+        if (newEmail == null || newEmail.isEmpty()) {
             log.error("Method changeUserEmail called with empty or null newEmail");
             throw new WrongEmailException(WrongEmailReason.EMAIL_EMPTY_OR_NULL);
         }
