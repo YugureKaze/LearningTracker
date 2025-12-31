@@ -8,7 +8,6 @@ import com.yugurekaze.learningtracker.user.model.dto.UserCreationRequest;
 import com.yugurekaze.learningtracker.user.model.dto.UserResponse;
 import com.yugurekaze.learningtracker.user.repository.UserRepository;
 import com.yugurekaze.learningtracker.user.service.DefaultUserService;
-import com.yugurekaze.learningtracker.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -124,8 +123,7 @@ public class UserServiceTest {
         when(userRepository.findByEmail("existing@mail.com"))
                 .thenReturn(Optional.of(existingUser));
 
-        assertThrows(WrongEmailException.class, () ->
-                userService.changeUserEmail(1L, "existing@mail.com"));
+        assertThrows(WrongEmailException.class, () -> userService.changeUserEmail(1L, "existing@mail.com"));
     }
 
     @Test
