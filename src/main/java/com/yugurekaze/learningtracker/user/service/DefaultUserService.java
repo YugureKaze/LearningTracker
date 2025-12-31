@@ -12,6 +12,7 @@ import com.yugurekaze.learningtracker.user.model.dto.UserResponse;
 import com.yugurekaze.learningtracker.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class DefaultUserService implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     @Override
@@ -48,6 +50,7 @@ public class DefaultUserService implements UserService {
     @Override
     public UserResponse createUser(UserCreationRequest userCreationRequest) {
         User user = userMapper.mapToUserCreation(userCreationRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return userMapper.mapToUserResponse(user);
     }
@@ -88,15 +91,15 @@ public class DefaultUserService implements UserService {
     public void changeUserPassword(Long id, String newPassword, String oldPassword) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-        if (!user.getPassword().equals(oldPassword)) {
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             log.error("User with id {} tried to change password with wrong old password", id);
             throw new WrongPasswordException(WrongPasswordReason.OLD_PASSWORD_MISMATCH);
         }
-        if (newPassword.equals(oldPassword)) {
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
             log.error("User with id {} tried to change password to the same password", id);
             throw new WrongPasswordException(WrongPasswordReason.SAME_AS_OLD);
         }
-        userRepository.changeUserPassword(id, newPassword);
+        userRepository.changeUserPassword(id, passwordEncoder.encode(newPassword));
         log.info("User with id {} changed password at {}", id, LocalDateTime.now());
     }
 

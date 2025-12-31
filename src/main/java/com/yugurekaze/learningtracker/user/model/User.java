@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
@@ -15,7 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 //TODO add builder
 public class User {
 
@@ -28,14 +26,11 @@ public class User {
             initialValue = 1,
             allocationSize = 1
     )
-    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(name = "email", unique = true, length = 255, nullable = false)
-    @EqualsAndHashCode.Include
     private String email;
 
-    @EqualsAndHashCode.Exclude
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
