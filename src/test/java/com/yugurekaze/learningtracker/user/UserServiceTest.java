@@ -7,6 +7,7 @@ import com.yugurekaze.learningtracker.user.model.User;
 import com.yugurekaze.learningtracker.user.model.dto.UserCreationRequest;
 import com.yugurekaze.learningtracker.user.model.dto.UserResponse;
 import com.yugurekaze.learningtracker.user.repository.UserRepository;
+import com.yugurekaze.learningtracker.user.service.DefaultUserService;
 import com.yugurekaze.learningtracker.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +31,7 @@ public class UserServiceTest {
     @Mock
     private UserMapper userMapper;
     @InjectMocks
-    private UserService userService;
+    private DefaultUserService userService;
 
     @Test
     void shouldReturnUserResponseWhenUserCreationSuccessful() {
@@ -93,8 +94,8 @@ public class UserServiceTest {
 
     @Test
     void shouldNotFoundUserByEmailWhenEmailNullOrEmpty() {
-        assertThrows(IllegalEmailException.class, () -> userService.getUserByEmail(null));
-        assertThrows(IllegalEmailException.class, () -> userService.getUserByEmail(""));
+        assertThrows(WrongEmailException.class, () -> userService.getUserByEmail(null));
+        assertThrows(WrongEmailException.class, () -> userService.getUserByEmail(""));
     }
 
     @Test
