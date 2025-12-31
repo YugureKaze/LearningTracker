@@ -57,7 +57,7 @@ public class DefaultUserService implements UserService {
 
     @Transactional
     @Override
-    public UserResponse changeUserEmail(Long id, String newEmail) {
+    public void changeUserEmail(Long id, String newEmail) {
         if (newEmail == null || newEmail.isEmpty()) {
             log.error("Method changeUserEmail called with empty or null newEmail");
             throw new WrongEmailException(WrongEmailReason.EMAIL_EMPTY_OR_NULL);
@@ -76,7 +76,6 @@ public class DefaultUserService implements UserService {
         }
         user.setEmail(newEmail);
         log.info("User with id {} changed email to {} at {}", id, newEmail, LocalDateTime.now());
-        return userMapper.mapToUserResponse(user);
     }
     //TODO добавить событие через kafka который пишет в ClickHouse для аналитики
     @Transactional
@@ -85,7 +84,7 @@ public class DefaultUserService implements UserService {
         userRepository.deleteById(id);
         log.info("User with id {} was deleted at {}", id, LocalDateTime.now());
     }
-    //TODO изменить смену пароля, сейчас не безопасное решение, чисто как каркас
+
     @Transactional
     @Override
     public void changeUserPassword(Long id, String newPassword, String oldPassword) {
@@ -99,8 +98,7 @@ public class DefaultUserService implements UserService {
             log.error("User with id {} tried to change password to the same password", id);
             throw new WrongPasswordException(WrongPasswordReason.SAME_AS_OLD);
         }
-        userRepository.changeUserPassword(id, passwordEncoder.encode(newPassword));
+        user.setPassword(passwordEncoder.encode(newPassword));
         log.info("User with id {} changed password at {}", id, LocalDateTime.now());
     }
-
 }
