@@ -1,8 +1,7 @@
 package com.yugurekaze.learningtracker.user;
 
-import com.yugurekaze.learningtracker.user.exception.IllegalEmailException;
-import com.yugurekaze.learningtracker.user.exception.UserNotFoundException;
-import com.yugurekaze.learningtracker.user.exception.WrongEmailException;
+import com.yugurekaze.learningtracker.user.exception.exceptionImpls.UserNotFoundException;
+import com.yugurekaze.learningtracker.user.exception.exceptionImpls.WrongEmailException;
 import com.yugurekaze.learningtracker.user.mapper.UserMapper;
 import com.yugurekaze.learningtracker.user.model.User;
 import com.yugurekaze.learningtracker.user.model.dto.UserCreationRequest;
