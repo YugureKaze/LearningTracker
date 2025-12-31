@@ -2,9 +2,6 @@ package com.yugurekaze.learningtracker.user.controller.errors;
 
 
 import com.yugurekaze.learningtracker.user.exception.BusinessException;
-import com.yugurekaze.learningtracker.user.exception.exceptionImpls.UserNotFoundException;
-import com.yugurekaze.learningtracker.user.exception.exceptionImpls.WrongEmailException;
-import com.yugurekaze.learningtracker.user.exception.exceptionImpls.WrongPasswordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
