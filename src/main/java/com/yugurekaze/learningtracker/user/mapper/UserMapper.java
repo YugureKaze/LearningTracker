@@ -16,6 +16,7 @@ public class UserMapper {
         );
     }
 
+
     public User mapToUserCreation(UserCreationRequest userCreationRequest) {
         return new User(
                 null,
