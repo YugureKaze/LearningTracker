@@ -22,6 +22,8 @@ public class UserMapper {
                 null,
                 userCreationRequest.email(),
                 userCreationRequest.password(),
+                null,
+                null,
                 null
         );
     }
