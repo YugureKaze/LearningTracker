@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,7 +18,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//TODO add builder
+@Builder
 public class User {
 
     @Id
@@ -29,14 +32,21 @@ public class User {
     )
     private Long id;
 
-    @Column(name = "email", unique = true, length = 255, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password", length = 255, nullable = false)
+    @Column(name = "password", nullable = false)
     @JsonIgnore
     private String password;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @Version
+    private Long version;
+
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }
